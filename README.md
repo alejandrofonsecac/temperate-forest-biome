@@ -68,20 +68,10 @@ npm run preview # Pré-visualiza o build
 7. **Referências** — Fontes bibliográficas e digitais
 
 ---
-
-## 🎨 Paleta de Cores
-
-| Papel (70/20/10)  | Nome            | Hex       |
-|-------------------|-----------------|-----------|
-| Base 70%          | Verde floresta  | `#1A2E1B` |
-| Secundária 20%    | Terra / marrom  | `#8B5E3C` |
-| Destaque 10%      | Laranja outonal | `#E07B39` |
-
----
-
 ## 🛠️ Tecnologias
 
 - **React 18** + **TypeScript**
+- **SpringBoot**
 - **TailwindCSS 3** com configuração personalizada
 - **React Router v6** para navegação
 - **Anime.js** para animações (Hero)
