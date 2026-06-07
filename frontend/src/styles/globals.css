@@ -1,0 +1,290 @@
+/* ==========================================================
+   globals.css — Estilos base do projeto
+   Importa o Tailwind e define variáveis CSS globais,
+   reset de scroll e estilos utilitários que não existem
+   no Tailwind por padrão.
+   ========================================================== */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ----------------------------------------------------------
+   VARIÁVEIS CSS GLOBAIS
+   Servem como fonte única da verdade para cores e tokens.
+   Assim, se precisar mudar a paleta, só muda aqui.
+   ---------------------------------------------------------- */
+:root {
+  /* Cores principais */
+  --color-floresta-900: #1A2E1B;
+  --color-floresta-800: #243D25;
+  --color-floresta-700: #2E4D2F;
+  --color-floresta-600: #3D6B3F;
+  --color-floresta-500: #4E8A50;
+  --color-floresta-400: #6BAD6D;
+  --color-floresta-300: #93C895;
+
+  --color-outono-600: #E07B39;
+  --color-outono-500: #F09050;
+  --color-outono-400: #F5AC70;
+  --color-outono-700: #C95200;
+
+  --color-terra-800: #4A2E12;
+  --color-terra-600: #8B5E3C;
+  --color-terra-400: #C4A882;
+  --color-terra-200: #EDE0CC;
+
+  --color-sombra-950: #0D1A0E;
+  --color-sombra-900: #111C12;
+  --color-sombra-800: #162318;
+
+  --color-neve: #F4F0EB;
+
+  /* Tipografia */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  /* Transições padrão */
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.6s ease;
+
+  /* Altura do header — usada para offset de âncoras */
+  --header-height: 72px;
+}
+
+/* ----------------------------------------------------------
+   RESET E BASE
+   ---------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Offset para links âncora não ficarem atrás do header fixo */
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  font-family: var(--font-body);
+  /* Fundo principal: verde floresta bem escuro, não bege */
+  background-color: var(--color-sombra-900);
+  color: var(--color-neve);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Remove list-style de listas sem classe */
+ul, ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Links sem estilo padrão */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Imagens responsivas por padrão */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ----------------------------------------------------------
+   SCROLLBAR CUSTOMIZADA
+   Visual mais elegante e integrado com o tema
+   ---------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-sombra-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-floresta-700);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-outono-600);
+}
+
+/* ----------------------------------------------------------
+   SELEÇÃO DE TEXTO
+   ---------------------------------------------------------- */
+::selection {
+  background: var(--color-outono-600);
+  color: #fff;
+}
+
+/* ----------------------------------------------------------
+   UTILITÁRIOS CUSTOMIZADOS
+   Classes que o Tailwind não gera automaticamente
+   ---------------------------------------------------------- */
+@layer utilities {
+  /* Texto com gradiente */
+  .text-gradient-outono {
+    background: linear-gradient(135deg, var(--color-outono-700), var(--color-outono-400));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-floresta {
+    background: linear-gradient(135deg, var(--color-floresta-300), var(--color-floresta-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glassmorphism — fundo translúcido com blur */
+  .glass {
+    background: rgba(36, 61, 37, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(107, 173, 109, 0.15);
+  }
+
+  .glass-dark {
+    background: rgba(13, 26, 14, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(107, 173, 109, 0.1);
+  }
+
+  /* Linha decorativa com gradiente */
+  .divider-outono {
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--color-outono-600), transparent);
+  }
+
+  .divider-floresta {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--color-floresta-500), transparent);
+  }
+
+  /* Efeito de "ruído" de fundo para textura */
+  .noise-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Visibilidade para animações de scroll */
+  /* Os elementos começam invisíveis e o hook useScrollReveal adiciona .is-visible */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal-left.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal-right.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Delay helpers para stagger de animações */
+  .delay-100 { transition-delay: 0.1s; }
+  .delay-200 { transition-delay: 0.2s; }
+  .delay-300 { transition-delay: 0.3s; }
+  .delay-400 { transition-delay: 0.4s; }
+  .delay-500 { transition-delay: 0.5s; }
+  .delay-600 { transition-delay: 0.6s; }
+}
+
+/* ----------------------------------------------------------
+   COMPONENTES GLOBAIS
+   Estilos base para elementos recorrentes
+   ---------------------------------------------------------- */
+@layer components {
+  /* Botão principal — destaque laranja outonal */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-pill
+           bg-outono-600 text-white font-body font-medium text-sm
+           transition-all duration-300 ease-out
+           hover:bg-outono-500 hover:shadow-outono hover:-translate-y-0.5
+           active:translate-y-0 active:shadow-none;
+  }
+
+  /* Botão secundário — borda verde */
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-pill
+           border border-floresta-400 text-floresta-300 font-body font-medium text-sm
+           transition-all duration-300 ease-out
+           hover:bg-floresta-700 hover:text-white hover:border-floresta-700
+           hover:-translate-y-0.5;
+  }
+
+  /* Container padrão da página */
+  .container-site {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Seção padrão */
+  .section {
+    @apply py-20 md:py-28 lg:py-36;
+  }
+
+  /* Título de seção */
+  .section-title {
+    @apply font-display text-display-md text-neve font-semibold;
+  }
+
+  /* Subtítulo de seção */
+  .section-subtitle {
+    @apply font-body text-floresta-300 text-sm uppercase tracking-widest font-medium;
+  }
+
+  /* Card base */
+  .card {
+    @apply bg-floresta-900 rounded-2xl overflow-hidden shadow-card
+           transition-all duration-300 ease-out
+           hover:shadow-card-hover hover:-translate-y-1;
+  }
+
+  /* Tag de badge (Endêmica, Nativa etc.) */
+  .badge {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-pill
+           text-xs font-body font-medium;
+  }
+
+  .badge-endemica {
+    @apply badge bg-outono-700/20 text-outono-400 border border-outono-700/30;
+  }
+
+  .badge-nativa {
+    @apply badge bg-floresta-700/30 text-floresta-300 border border-floresta-600/30;
+  }
+}
