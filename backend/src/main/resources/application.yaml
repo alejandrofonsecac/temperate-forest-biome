@@ -1,3 +1,11 @@
 spring:
   application:
     name: floresta-temperada
+  datasource:
+    url: jdbc:mysql://localhost:3311/floresta-sazonal-temperada?createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
