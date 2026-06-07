@@ -13,7 +13,7 @@ const config: Config = {
       // =====================================================
       colors: {
         floresta: {
-          // Verde floresta profundo — cor base predominante
+          // Verde profundo — cor base predominante
           900: '#1A2E1B',
           800: '#243D25',
           700: '#2E4D2F',
