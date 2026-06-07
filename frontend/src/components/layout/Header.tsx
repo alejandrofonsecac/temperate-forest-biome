@@ -84,7 +84,7 @@ function Header() {
         )}
         style={{ height: 'var(--header-height)' }}
       >
-        <div className="container-site h-full flex items-center justify-between">
+        <div className="container-site bg-[#F7F0E6] h-full flex items-center justify-between">
 
           {/* ------------------------------------------------
               LOGO / NOME DO SITE
@@ -95,19 +95,19 @@ function Header() {
             aria-label="Página inicial - Floresta Sazonal Temperada"
           >
             {/* Ícone de folha com animação de balanço */}
-            <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-floresta-700/60 border border-floresta-500/30 group-hover:border-outono-600/50 transition-all duration-300">
+            <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-outono-400/30 border border-outono-800/30 group-hover:border-outono-600 transition-all duration-300">
               <Leaf
                 size={18}
-                className="text-floresta-300 group-hover:text-outono-400 transition-colors duration-300 animate-leaf-sway"
+                className="text-outono-600 group-hover:text-outono-700 transition-colors duration-300 animate-leaf-sway"
               />
             </span>
 
             {/* Nome em duas linhas */}
             <div className="leading-tight">
-              <p className="font-display text-neve text-sm font-semibold tracking-tight">
+              <p className="font-display text-sombra-950 text-sm font-semibold tracking-tight">
                 Floresta Sazonal
               </p>
-              <p className="font-body text-floresta-300 text-xs font-light tracking-widest uppercase">
+              <p className="font-body text-outono-600 text-xs font-light tracking-widest uppercase">
                 Temperada
               </p>
             </div>
@@ -149,7 +149,7 @@ function Header() {
           ------------------------------------------------ */}
           <button
             onClick={() => setMenuAberto(!menuAberto)}
-            className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl text-floresta-300 hover:text-neve hover:bg-floresta-700/40 transition-all duration-200"
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl text-sombra-950 hover:text-white hover:bg-outono-600/70 transition-all duration-200"
             aria-label={menuAberto ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={menuAberto}
           >

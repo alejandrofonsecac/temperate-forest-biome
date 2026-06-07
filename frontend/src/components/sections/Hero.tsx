@@ -91,8 +91,8 @@ function Hero() {
         />
 
         {/* Camadas de gradiente para criar profundidade */}
-        <div className="absolute inset-0 bg-gradient-to-b from-sombra-950/60 via-sombra-950/30 to-sombra-950/90" />
-        <div className="absolute inset-0 bg-gradient-to-r from-sombra-950/70 via-sombra-950/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-outono-700/25 via-outono-600/20 to-outono-500/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-sombra-950/40 via-creme-900/15 to-transparent" />
 
         {/* Overlay de partículas de folhas — elemento decorativo SVG */}
         <div className="absolute inset-0 opacity-10 pointer-events-none overflow-hidden">
@@ -125,7 +125,7 @@ function Hero() {
           {/* Subtítulo / categoria */}
           <p
             ref={subtitleRef}
-            className="section-subtitle mb-4 opacity-0"
+            className="section-subtitle mb-4 opacity-0 text-outono-600"
           >
             Museu Virtual dos Biomas do Mundo
           </p>

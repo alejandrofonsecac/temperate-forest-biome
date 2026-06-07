@@ -15,30 +15,35 @@
    Assim, se precisar mudar a paleta, só muda aqui.
    ---------------------------------------------------------- */
 :root {
-  /* Cores principais */
-  --color-floresta-900: #1A2E1B;
-  --color-floresta-800: #243D25;
-  --color-floresta-700: #2E4D2F;
-  --color-floresta-600: #3D6B3F;
-  --color-floresta-500: #4E8A50;
-  --color-floresta-400: #6BAD6D;
-  --color-floresta-300: #93C895;
+  --color-creme-950: #1C1410;
+  --color-creme-900: #2E2018;
+  --color-creme-800: #4A3428;
+  --color-creme-700: #6B5040;
+  --color-creme-600: #8C7060;
+  --color-creme-500: #B09080;
+  --color-creme-400: #CDB8A8;
+  --color-creme-300: #E0D0C0;
+  --color-creme-200: #EDE0D0;
+  --color-creme-150: #F2E8DC;
+  --color-creme-100: #F7F0E6;
+  --color-creme-50:  #FDFAF5;
 
-  --color-outono-600: #E07B39;
-  --color-outono-500: #F09050;
-  --color-outono-400: #F5AC70;
-  --color-outono-700: #C95200;
+  /* Outono — laranjas e âmbar (20%) */
+  --color-outono-700: #B34800;
+  --color-outono-600: #D4620A;
+  --color-outono-500: #E8751A;
+  --color-outono-400: #F28C35;
+  --color-outono-300: #F5A855;
+  --color-outono-200: #FAC880;
+  --color-outono-100: #FDEBD0;
 
-  --color-terra-800: #4A2E12;
-  --color-terra-600: #8B5E3C;
-  --color-terra-400: #C4A882;
-  --color-terra-200: #EDE0CC;
-
-  --color-sombra-950: #0D1A0E;
-  --color-sombra-900: #111C12;
-  --color-sombra-800: #162318;
-
-  --color-neve: #F4F0EB;
+  /* Verde floresta — acento (10%) */
+  --color-floresta-700: #244530;
+  --color-floresta-600: #2E5A3A;
+  --color-floresta-500: #3D7A4E;
+  --color-floresta-400: #549E65;
+  --color-floresta-300: #78BE88;
+  --color-floresta-200: #A8D8B0;
 
   /* Tipografia */
   --font-display: 'Playfair Display', Georgia, serif;
@@ -241,9 +246,9 @@ img {
   /* Botão secundário — borda verde */
   .btn-outline {
     @apply inline-flex items-center gap-2 px-6 py-3 rounded-pill
-           border border-floresta-400 text-floresta-300 font-body font-medium text-sm
+           border border-white text-white font-body font-medium text-sm
            transition-all duration-300 ease-out
-           hover:bg-floresta-700 hover:text-white hover:border-floresta-700
+           hover:bg-outono-200/30 hover:text-white hover:border-white
            hover:-translate-y-0.5;
   }
 

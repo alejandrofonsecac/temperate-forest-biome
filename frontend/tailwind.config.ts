@@ -33,8 +33,8 @@ const config: Config = {
           500: '#F09050',
           400: '#F5AC70',
           300: '#F8C898',
-          200: '#FCE3C8',
-          100: '#FEF3E8',
+          200: '#ebd5be',
+          100: '#F7F0E6',
         },
         terra: {
           // Tons terrosos / marrom — cor secundária (20%)
@@ -51,10 +51,10 @@ const config: Config = {
         // Neutros do site — substituem o bege genérico
         // Fundo principal usa cinza-escuro quente, não branco/bege
         sombra: {
-          950: '#0D1A0E',
-          900: '#111C12',
-          800: '#162318',
-          700: '#1E3020',
+          950: '#121212',
+          900: '#181818',
+          800: '#2b1f1b',
+          700: '#2e1809',
         },
         neve: {
           // Para textos claros e fundos de seções específicas
