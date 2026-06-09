@@ -70,10 +70,10 @@ function Biodiversidade() {
 
         {/* Cabeçalho */}
         <ScrollReveal className="reveal text-center mb-16">
-          <p className="section-subtitle mb-3">Vida no Bioma</p>
+          <p className="section-subtitle mb-3 text-outono-700">Vida no Bioma</p>
           <h2 className="section-title">
             Biodiversidade da{' '}
-            <span className="text-gradient-floresta">Floresta Temperada</span>
+            <span className=" text-outono-700">Floresta Temperada</span>
           </h2>
           <p className="font-body text-floresta-300 text-base mt-4 max-w-2xl mx-auto leading-relaxed">
             A variação sazonal extrema moldou organismos com estratégias de sobrevivência
@@ -88,11 +88,11 @@ function Biodiversidade() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-20">
           {grupos.map((grupo, i) => (
             <ScrollReveal key={grupo.nome} className="reveal" delay={i * 60}>
-              <div className="card p-5 text-center group hover:border hover:border-floresta-600/30">
+              <div className="bg-outono-600 card p-5 text-center group hover:border hover:border-floresta-600/30">
                 <div className="text-3xl mb-3">{grupo.icone}</div>
                 <p className="font-display text-neve text-sm font-semibold mb-1">{grupo.nome}</p>
-                <p className="font-body text-outono-400 text-xs font-medium mb-2">{grupo.numero}</p>
-                <p className="font-body text-floresta-400 text-xs leading-snug">{grupo.descricao}</p>
+                <p className="font-body text-white text-xs font-medium mb-2">{grupo.numero}</p>
+                <p className="font-body text-sombra-950 text-xs leading-snug">{grupo.descricao}</p>
               </div>
             </ScrollReveal>
           ))}

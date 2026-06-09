@@ -13,7 +13,7 @@ import { faunaDestaque } from '../../data/faunaData';
 
 function FaunaSection() {
   return (
-    <section id="fauna" className="section bg-sombra-800">
+    <section id="fauna" className="section bg-sombra-950">
       <div className="container-site">
 
         {/* Cabeçalho */}

@@ -45,6 +45,11 @@
   --color-floresta-300: #78BE88;
   --color-floresta-200: #A8D8B0;
 
+  --color-sombra-950: #121212;
+  --color-sombra-900: #181818;
+  --color-sombra-800: #092026;
+  --color-sombra-700: #0C3B41;
+
   /* Tipografia */
   --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
@@ -281,7 +286,7 @@ img {
 
   /* Tag de badge (Endêmica, Nativa etc.) */
   .badge {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-pill
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full
            text-xs font-body font-medium;
   }
 

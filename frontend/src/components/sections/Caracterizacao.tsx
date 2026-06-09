@@ -81,7 +81,7 @@ const regioes = [
 
 function Caracterizacao() {
   return (
-    <section id="caracterizacao" className="section bg-sombra-800">
+    <section id="caracterizacao" className="section bg-terra-900">
       <div className="container-site">
 
         {/* --------------------------------------------------------
@@ -110,7 +110,7 @@ function Caracterizacao() {
               className="reveal"
               delay={i * 80}
             >
-              <div className="card p-6 h-full group">
+              <div className="bg-sombra-900 card bg-som p-6 h-full group">
                 {/* Ícone com fundo laranja */}
                 <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-outono-600/15 border border-outono-600/20 mb-5 group-hover:bg-outono-600/25 transition-colors duration-300">
                   <span className="text-outono-500">{item.icone}</span>
@@ -127,7 +127,7 @@ function Caracterizacao() {
                 {/* Detalhe em destaque */}
                 <div className="mt-auto pt-4 border-t border-floresta-800">
                   <p className="font-body text-outono-400 text-xs font-medium">
-                    📌 {item.detalhe}
+                     {item.detalhe}
                   </p>
                 </div>
               </div>
@@ -140,7 +140,7 @@ function Caracterizacao() {
             Mapa SVG simplificado + tabela de regiões
         -------------------------------------------------------- */}
         <ScrollReveal className="reveal">
-          <div className="bg-floresta-900 rounded-3xl overflow-hidden">
+          <div className="bg-sombra-900 rounded-3xl overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2">
 
               {/* Imagem do mapa */}
@@ -150,13 +150,13 @@ function Caracterizacao() {
                   alt="Vista aérea de floresta temperada com folhagem outonal"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-floresta-900/60 hidden lg:block" />
-                <div className="absolute inset-0 bg-gradient-to-t from-floresta-900/80 to-transparent lg:hidden" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-outono-600/60 hidden lg:block" />
+                <div className="absolute inset-0 bg-gradient-to-t from-sombra-900/70 to-transparent lg:hidden" />
 
                 {/* Label sobre a imagem */}
                 <div className="absolute bottom-4 left-4 glass rounded-xl px-4 py-2">
                   <p className="font-body text-neve text-xs font-medium">
-                    🍂 Floresta outonal — Canadá / Nova Inglaterra
+                     Floresta outonal — Canadá / Nova Inglaterra
                   </p>
                 </div>
               </div>
@@ -176,17 +176,17 @@ function Caracterizacao() {
                   {regioes.map((regiao, i) => (
                     <div
                       key={regiao.nome}
-                      className="flex items-start gap-3 p-3 rounded-xl bg-floresta-800/50 hover:bg-floresta-800 transition-colors duration-200"
+                      className="flex items-start gap-3 p-3 rounded-xl bg-outono-200 transition-colors duration-200"
                     >
                       {/* Número */}
-                      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-outono-600/20 text-outono-400 text-xs font-bold shrink-0 mt-0.5">
+                      <span className="flex items-center justify-center w-6 h-6 rounded-full border-sombra-950 bg-outono-600/20 text-sombra-950  text-xs font-bold shrink-0 mt-0.5">
                         {i + 1}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <p className="font-body text-neve text-sm font-medium">{regiao.nome}</p>
-                        <p className="font-body text-floresta-400 text-xs">{regiao.paises}</p>
+                        <p className="font-body text-sombra-950 text-sm font-medium">{regiao.nome}</p>
+                        <p className="font-body text-sombra-900 text-xs">{regiao.paises}</p>
                       </div>
-                      <span className="font-body text-outono-500 text-xs font-medium whitespace-nowrap">
+                      <span className="font-body text-outono-700 text-xs font-medium whitespace-nowrap">
                         {regiao.area}
                       </span>
                     </div>

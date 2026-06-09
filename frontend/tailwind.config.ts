@@ -26,9 +26,11 @@ const config: Config = {
         },
         outono: {
           // Laranja e âmbar outonal — cor de destaque (10%)
-          900: '#7A2F00',
+          1100: '#F37622',
+          1000: '#F05042',
+          900: '#934300',
           800: '#A84000',
-          700: '#C95200',
+          700: '#EF4723',
           600: '#E07B39',  // Principal destaque
           500: '#F09050',
           400: '#F5AC70',
@@ -38,7 +40,7 @@ const config: Config = {
         },
         terra: {
           // Tons terrosos / marrom — cor secundária (20%)
-          900: '#2C1A0A',
+          900: '#2B1F1B',
           800: '#4A2E12',
           700: '#6B4220',
           600: '#8B5E3C',
@@ -53,8 +55,8 @@ const config: Config = {
         sombra: {
           950: '#121212',
           900: '#181818',
-          800: '#2b1f1b',
-          700: '#2e1809',
+          800: '#092026',
+          700: '#0C3B41',
         },
         neve: {
           // Para textos claros e fundos de seções específicas

@@ -81,7 +81,7 @@ const conservacao = [
 
 function ImpactosHumanos() {
   return (
-    <section id="impactos" className="section bg-sombra-800">
+    <section id="impactos" className="section bg-sombra-950">
       <div className="container-site">
 
         {/* Cabeçalho */}
@@ -131,10 +131,9 @@ function ImpactosHumanos() {
                       <h3 className="font-display text-neve text-lg font-semibold">{item.titulo}</h3>
                       <span className={`badge text-xs ${
                         item.gravidade === 'alta'
-                          ? 'bg-red-700/15 text-red-400 border border-red-700/25'
-                          : 'bg-yellow-700/15 text-yellow-400 border border-yellow-700/25'
+                          ? 'bg-red-700 text-red-400 border border-red-700/25'
+                          : 'bg-yellow-400 text-yellow-400'
                       }`}>
-                        {item.gravidade === 'alta' ? 'Impacto Alto' : 'Impacto Médio'}
                       </span>
                     </div>
                     <p className="font-body text-floresta-200 text-sm leading-relaxed mb-3">
@@ -142,7 +141,7 @@ function ImpactosHumanos() {
                     </p>
                     <div className="bg-floresta-800/60 rounded-xl p-3">
                       <p className="font-body text-outono-400 text-xs">
-                        📌 Exemplo real: {item.exemplo}
+                         Exemplo real: {item.exemplo}
                       </p>
                     </div>
                   </div>
@@ -156,7 +155,7 @@ function ImpactosHumanos() {
         <ScrollReveal className="reveal">
           <div className="bg-floresta-900 rounded-3xl p-8 md:p-12">
             <div className="text-center mb-10">
-              <p className="section-subtitle mb-2">Soluções</p>
+              <p className="section-subtitle mb-2 text-outono-600">Soluções</p>
               <h3 className="font-display text-neve text-display-md font-semibold">
                 Estratégias de Conservação
               </h3>
@@ -166,7 +165,7 @@ function ImpactosHumanos() {
               {conservacao.map((item, i) => (
                 <div
                   key={item.titulo}
-                  className="flex gap-4 p-5 rounded-2xl bg-floresta-800/50 hover:bg-floresta-800 transition-colors duration-300"
+                  className="flex gap-4 p-5 rounded-2xl bg-sombra-950 hover:bg-floresta-800 transition-colors duration-300"
                 >
                   <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-floresta-600/30 text-floresta-300 shrink-0">
                     {item.icone}
