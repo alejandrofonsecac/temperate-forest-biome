@@ -28,11 +28,9 @@ const navItems: NavItem[] = [
 ];
 
 function Header() {
-  // Controla se o menu mobile está aberto
   const [menuAberto, setMenuAberto] = useState(false);
-
-  // Controla se o header tem fundo sólido (ao scrollar)
   const [scrollado, setScrollado] = useState(false);
+  const [mostrarHeader, setMostrarHeader] = useState(true)
 
   // Usado para destacar o link da página atual
   const location = useLocation();
@@ -45,9 +43,12 @@ function Header() {
       // Aplica fundo sólido após 60px de scroll
       setScrollado(window.scrollY > 60);
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    }
   }, []);
 
   // Fecha o menu mobile ao mudar de rota

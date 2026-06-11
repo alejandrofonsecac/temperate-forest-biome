@@ -10,7 +10,6 @@
 // =============================================================
 
 import type { EspecieFauna } from '../types';
-
 export const faunaData: EspecieFauna[] = [
   // -----------------------------------------------------------
   // MAMÍFEROS
@@ -36,7 +35,7 @@ export const faunaData: EspecieFauna[] = [
     tipo: 'fauna',
     nomePopular: 'Cervo-vermelho',
     nomeCientifico: 'Cervus elaphus',
-    imagem: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/RedDeer.jpg/1280px-RedDeer.jpg',
+    imagem: '/public/images/{hero,fauna,flora,biome,icons}/fauna/cervo-vermelho.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,
@@ -52,7 +51,7 @@ export const faunaData: EspecieFauna[] = [
     tipo: 'fauna',
     nomePopular: 'Lobo-cinzento',
     nomeCientifico: 'Canis lupus',
-    imagem: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Collage_of_Nine_Wolves.jpg/1280px-Collage_of_Nine_Wolves.jpg',
+    imagem: '/public/images/{hero,fauna,flora,biome,icons}/fauna/lobo-cinzento.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,
@@ -68,7 +67,7 @@ export const faunaData: EspecieFauna[] = [
     tipo: 'fauna',
     nomePopular: 'Javali-europeu',
     nomeCientifico: 'Sus scrofa',
-    imagem: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Wild_Boar_Sow_with_Piglets.jpg/1280px-Wild_Boar_Sow_with_Piglets.jpg',
+    imagem: '/public/images/{hero,fauna,flora,biome,icons}/fauna/javali-europeu.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,
@@ -84,7 +83,7 @@ export const faunaData: EspecieFauna[] = [
     tipo: 'fauna',
     nomePopular: 'Esquilo-cinzento',
     nomeCientifico: 'Sciurus carolinensis',
-    imagem: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Squirrel_posing.jpg/1280px-Squirrel_posing.jpg',
+    imagem: '/public/images/{hero,fauna,flora,biome,icons}/fauna/esquilo-cinzento.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,
@@ -100,7 +99,7 @@ export const faunaData: EspecieFauna[] = [
     tipo: 'fauna',
     nomePopular: 'Raposa-vermelha',
     nomeCientifico: 'Vulpes vulpes',
-    imagem: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/VulpesvulpesGe.jpg/1280px-VulpesvulpesGe.jpg',
+    imagem: '/public/images/{hero,fauna,flora,biome,icons}/fauna/raposa-vermelha.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,
@@ -119,7 +118,7 @@ export const faunaData: EspecieFauna[] = [
     tipo: 'fauna',
     nomePopular: 'Pica-pau-manchado',
     nomeCientifico: 'Picoides pubescens',
-    imagem: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Downy_Woodpecker.jpg/1280px-Downy_Woodpecker.jpg',
+    imagem: '/public/images/{hero,fauna,flora,biome,icons}/fauna/pica-pau-manchado.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,
@@ -135,7 +134,7 @@ export const faunaData: EspecieFauna[] = [
     tipo: 'fauna',
     nomePopular: 'Gavião-de-cauda-vermelha',
     nomeCientifico: 'Buteo jamaicensis',
-    imagem: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Red-tailed_Hawk_3.jpg/1280px-Red-tailed_Hawk_3.jpg',
+    imagem: '/public/images/{hero,fauna,flora,biome,icons}/fauna/gaviao-de-cauda-vermelha.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,
@@ -151,7 +150,7 @@ export const faunaData: EspecieFauna[] = [
     tipo: 'fauna',
     nomePopular: 'Gaio-azul',
     nomeCientifico: 'Cyanocitta cristata',
-    imagem: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Blue_Jay_%28Cyanocitta_cristata%29.jpg/1280px-Blue_Jay_%28Cyanocitta_cristata%29.jpg',
+    imagem: '/public/images/{hero,fauna,flora,biome,icons}/fauna/gaio-azul.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,
