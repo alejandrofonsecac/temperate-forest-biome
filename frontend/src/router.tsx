@@ -16,6 +16,7 @@ import Home from './pages/Home';
 import FaunaGaleria from './pages/FaunaGaleria';
 import FloraGaleria from './pages/FloraGaleria';
 import Quiz from './pages/Quiz';
+import Ranking from "./pages/Ranking.tsx";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: 'quiz',
         element: <Quiz />,
+      },
+      {
+        path: "/ranking",
+        element: <Ranking/>
       },
     ],
   },
