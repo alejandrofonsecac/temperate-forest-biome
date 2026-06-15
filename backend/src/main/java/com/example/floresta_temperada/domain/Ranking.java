@@ -12,7 +12,7 @@ public class Ranking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer position;
     private String name;
-    private Integer pontuation;
+    private Integer time;
+    private Integer score;
 }
