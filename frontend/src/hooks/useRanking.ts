@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/services/supabase.ts";
-import type { Ranking } from "../types/ranking.ts";
+import { api } from "../services/api";
+import type { Ranking } from "../types/ranking";
 
-export function useRanking() {
+export function useRanking(){
+
     const [ranking, setRanking] = useState<Ranking[]>([]);
+
     useEffect(() => {
         searchRanking();
-    }, [])
+    }, []);
 
     async function searchRanking(){
-
-        const { data } = await supabase
-            .from("ranking")
-            .select("*")
-            .order("tempo", { ascending: true })
-            .limit(10);
-
-        if(data){
-            setRanking(data);
+        try{
+            const response =
+                await api.get("/ranking");
+            console.log(response.data);
+            setRanking(response.data);
+        }catch(error){
+            console.log(error);
         }
     }
 
     return {
-        ranking,
-    }
+        ranking
+    };
 }
