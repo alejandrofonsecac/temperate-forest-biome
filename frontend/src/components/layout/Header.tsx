@@ -6,6 +6,7 @@
 // - Menu de navegação no centro/direita (desktop)
 // - Menu hamburguer animado (mobile)
 // - Fundo transparente que fica sólido (glass) ao scrollar
+// - Forçado a aparecer automaticamente 100% no topo
 // - Link ativo destacado em laranja
 // =============================================================
 
@@ -15,8 +16,6 @@ import { Menu, X, Leaf } from 'lucide-react';
 import clsx from 'clsx';
 import type { NavItem } from '../../types';
 
-// Itens do menu de navegação
-// href com # aponta para seções da Home via scroll suave
 const navItems: NavItem[] = [
   { label: 'Início',         href: '/#inicio' },
   { label: 'Caracterização', href: '/#caracterizacao' },
@@ -30,35 +29,45 @@ const navItems: NavItem[] = [
 function Header() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
+  const [noTopo, setNoTopo] = useState(true); // Controla a transparência inicial
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const location = useLocation();
 
   // ----------------------------------------------------------
-  // Detecta scroll para mudar visual do header
+  // Detecta scroll para ocultar/exibir e mudar visual do header
   // ----------------------------------------------------------
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY <= 50) {
-        setLastScrollY(currentScrollY);
-      }else if (currentScrollY > lastScrollY) {
-        setShowHeader(false);
-      } else {
+      // REGRA DE OURO: Se estiver 100% no topo, o header obrigatoriamente aparece e fica transparente
+      if (currentScrollY === 0) {
         setShowHeader(true);
+        setNoTopo(true);
+      } else {
+        setNoTopo(false);
+
+        // Se o menu mobile estiver aberto, não esconde o header ao scrollar
+        if (!menuAberto) {
+          if (currentScrollY > lastScrollY && currentScrollY > 50) {
+            // Rola para baixo: esconde
+            setShowHeader(false);
+          } else {
+            // Rola para cima: mostra
+            setShowHeader(true);
+          }
+        }
       }
+
       setLastScrollY(currentScrollY);
     };
 
-
-    window.addEventListener('scroll', handleScroll, {
-      passive: true,
-    });
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
-    }
-  }, [lastScrollY]);
+    };
+  }, [lastScrollY, menuAberto]);
 
   useEffect(() => {
     setMenuAberto(false);
@@ -81,23 +90,25 @@ function Header() {
         className={clsx(
           'top-0 left-0 right-0 z-50 fixed',
           'transition-all duration-500 ease-out',
-          showHeader ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
-          'bg-transparent',
-          showHeader && 'glass-light border-b border-floresta-700/20 backdrop-blur-sm'
+          showHeader ? 'translate-y-0 opacity-100 pointer-events-auto' : '-translate-y-full opacity-0 pointer-events-none',
+
+          noTopo 
+            ? 'bg-transparent border-b border-transparent ' 
+            : 'glass-light border-b border-floresta-700/20 backdrop-blur-sm '
         )}
         style={{ height: 'var(--header-height)' }}
       >
-        <div className="container-site bg-[#F7F0E6] h-full flex items-center justify-between">
+        <div className={clsx(
+          "container-site h-full flex items-center justify-between transition-colors duration-500",
+          noTopo ? "bg-transparent" : "bg-[#F7F0E6]/90"
+        )}>
 
-          {/* ------------------------------------------------
-              LOGO / NOME DO SITE
-          ------------------------------------------------ */}
+          {/* LOGO / NOME DO SITE */}
           <Link
             to="/"
             className="flex items-center gap-2.5 group"
             aria-label="Página inicial - Floresta Sazonal Temperada"
           >
-            {/* Ícone de folha com animação de balanço */}
             <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-outono-400/30 border border-outono-800/30 group-hover:border-outono-600 transition-all duration-300">
               <Leaf
                 size={18}
@@ -105,9 +116,10 @@ function Header() {
               />
             </span>
 
-            {/* Nome em duas linhas */}
             <div className="leading-tight">
-              <p className="font-display text-sombra-950 text-sm font-semibold tracking-tight">
+              <p className={clsx(
+                  'font-display text-sombra-950 text-sm font-semibold tracking-tight', noTopo ? 'text-transparent bg-clip-text bg-gradient-to-r from-outono-600 to-floresta-800' : 'text-floresta-800'
+              )} >
                 Floresta Sazonal
               </p>
               <p className="font-body text-outono-600 text-xs font-light tracking-widest uppercase">
@@ -116,10 +128,7 @@ function Header() {
             </div>
           </Link>
 
-          {/* ------------------------------------------------
-              MENU DESKTOP
-              Visível apenas em telas md e maiores
-          ------------------------------------------------ */}
+          {/* MENU DESKTOP */}
           <nav className="hidden md:flex items-center gap-1" aria-label="Navegação principal">
             {navItems.map((item) => (
               <Link
@@ -127,19 +136,17 @@ function Header() {
                 to={item.href}
                 className={clsx(
                   'relative px-3 py-2 font-body text-sm transition-colors duration-200 rounded-lg',
-                  // Link do Quiz tem destaque especial
                   item.href === '/quiz'
                     ? 'ml-2 btn-primary !py-2 !px-5 text-xs'
                     : clsx(
-                        'hover:text-neve',
+                        'hover:text-outono-500',
                         isAtivo(item.href)
-                          ? 'text-outono-400 font-medium'
-                          : 'text-floresta-300'
+                          ? 'text-outono-500 font-medium'
+                          : 'text-floresta-800' // Alterado temporariamente para legibilidade sobre fundo claro/escuro
                       ),
                 )}
               >
                 {item.label}
-                {/* Sublinhado animado para links ativos (exceto Quiz) */}
                 {item.href !== '/quiz' && isAtivo(item.href) && (
                   <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-outono-500 rounded-full" />
                 )}
@@ -147,16 +154,13 @@ function Header() {
             ))}
           </nav>
 
-          {/* ------------------------------------------------
-              BOTÃO HAMBURGUER — mobile only
-          ------------------------------------------------ */}
+          {/* BOTÃO HAMBURGUER — mobile only */}
           <button
             onClick={() => setMenuAberto(!menuAberto)}
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl text-sombra-950 hover:text-white hover:bg-outono-600/70 transition-all duration-200"
             aria-label={menuAberto ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={menuAberto}
           >
-            {/* Alterna entre ícone de menu e X com animação */}
             <span
               className={clsx(
                 'absolute transition-all duration-300',
@@ -177,34 +181,25 @@ function Header() {
         </div>
       </header>
 
-      {/* --------------------------------------------------------
-          MENU MOBILE — painel deslizante
-          Aparece abaixo do header quando hamburguer está ativo
-      -------------------------------------------------------- */}
+      {/* MENU MOBILE — painel deslizante */}
       <div
         className={clsx(
           'fixed inset-0 z-40 md:hidden',
           'transition-all duration-400 ease-out',
-          menuAberto
-            ? 'opacity-100 pointer-events-auto'
-            : 'opacity-0 pointer-events-none'
+          menuAberto ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
-        // Fundo escuro translúcido atrás do menu
         onClick={() => setMenuAberto(false)}
         aria-hidden={!menuAberto}
       >
-        {/* Painel do menu propriamente dito */}
         <nav
           className={clsx(
             'absolute top-[var(--header-height)] right-0 left-0',
             'glass-dark border-b border-floresta-700/20',
             'px-4 py-6 flex flex-col gap-1',
             'transition-all duration-400 ease-out',
-            menuAberto
-              ? 'translate-y-0 opacity-100'
-              : '-translate-y-4 opacity-0'
+            menuAberto ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
           )}
-          onClick={(e) => e.stopPropagation()} // Evita fechar ao clicar no painel
+          onClick={(e) => e.stopPropagation()}
           aria-label="Menu mobile"
         >
           {navItems.map((item, i) => (
@@ -215,7 +210,6 @@ function Header() {
               className={clsx(
                 'flex items-center px-4 py-3.5 rounded-xl font-body text-base',
                 'transition-all duration-300',
-                // Stagger de entrada dos itens
                 menuAberto ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0',
                 item.href === '/quiz'
                   ? 'mt-2 bg-outono-600 text-white font-medium justify-center rounded-pill'
