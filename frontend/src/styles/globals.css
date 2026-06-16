@@ -62,22 +62,17 @@
   --header-height: 72px;
 }
 
-/* ----------------------------------------------------------
-   RESET E BASE
-   ---------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
-  /* Offset para links âncora não ficarem atrás do header fixo */
   scroll-padding-top: var(--header-height);
 }
 
 body {
   font-family: var(--font-body);
-  /* Fundo principal: verde floresta bem escuro, não bege */
   background-color: var(--color-sombra-900);
   color: var(--color-neve);
   -webkit-font-smoothing: antialiased;

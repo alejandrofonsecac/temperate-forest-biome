@@ -1,7 +1,7 @@
 // =============================================================
 // pages/Quiz.tsx
 //
-// Página do Quiz sobre a Floresta Sazonal Temperada.
+// Página do Quiz sobre a Floresta Sazonal Temperada com tempo limite.
 // =============================================================
 
 import { useState, useEffect, useRef } from 'react';
@@ -10,9 +10,6 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import type { Questao, RankingRequest } from '../types';
 
-// ----------------------------------------------------------
-// QUESTÕES DO QUIZ (dados locais)
-// ----------------------------------------------------------
 const questoesLocais: Questao[] = [
   {
     id: 1,
@@ -170,10 +167,6 @@ const questoesLocais: Questao[] = [
   },
 ];
 
-// ----------------------------------------------------------
-// COMPONENTE PRINCIPAL
-// ----------------------------------------------------------
-
 type FaseQuiz = 'inicio' | 'jogando' | 'resultado';
 
 function Quiz() {
@@ -185,25 +178,92 @@ function Quiz() {
   const [historico, setHistorico] = useState<boolean[]>([]);
   const [nameUser, setNameUser] = useState('');
 
-  // Cronômetro
+  // TEMPO LIMITE: 5 minutos = 300 segundos
+  const TEMPO_LIMITE = 5 * 60;
+  
+  // O estado 'tempo' agora guardará quantos segundos SE PASSARAM (para enviar ao banco)
   const [tempo, setTempo] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const questaoAtual = questoesLocais[indiceAtual];
-  const totalQuestoes = questoesLocais.length;
+  // Refs auxiliares para evitar problemas de escopo/closure dentro do setInterval
+  const acertosRef = useRef(acertos);
+  const tempoRef = useRef(tempo);
+  const nameUserRef = useRef(nameUser);
 
-  // Inicia/para o timer
+  // Sincroniza as referências mutáveis para que o timer sempre pegue os dados mais recentes
+  useEffect(() => { acertosRef.current = acertos; }, [acertos]);
+  useEffect(() => { tempoRef.current = tempo; }, [tempo]);
+  useEffect(() => { nameUserRef.current = nameUser; }, [nameUser]);
+
+  // Enviar os dados via POST para o Backend Spring Boot
+  async function finalizarQuiz() {
+    const dadosResultado: RankingRequest = {
+      name: nameUserRef.current,
+      score: acertosRef.current,
+      time: tempoRef.current,
+    };
+
+    try {
+      const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/quiz/salvar-resultado`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dadosResultado),
+          }
+      );
+
+      if (!response.ok) {
+        throw new Error('Erro ao salvar o resultado no servidor.');
+      }
+
+      console.log('Resultado salv com sucesso!');
+    } catch (error) {
+      console.error('Erro na requisição POST:', error);
+    }
+  }
+
+  // Função isolada para gerenciar o encerramento forçado por tempo
+  const encerrarPorTempoEsgotado = async () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    alert("O tempo de 5 minutos acabou! Seu questionário será enviado automaticamente.");
+    await finalizarQuiz();
+    setFase('resultado');
+  };
+
+  // Monitora e atualiza o cronômetro
   useEffect(() => {
     if (fase === 'jogando') {
-      timerRef.current = setInterval(() => setTempo((t) => t + 1), 1000);
+      timerRef.current = setInterval(() => {
+        setTempo((t) => {
+          const novoTempo = t + 1;
+          // Se atingiu ou passou de 5 minutos (300 segundos)
+          if (novoTempo >= TEMPO_LIMITE) {
+            encerrarPorTempoEsgotado();
+            return TEMPO_LIMITE;
+          }
+          return novoTempo;
+        });
+      }, 1000);
     } else {
       if (timerRef.current) clearInterval(timerRef.current);
     }
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [fase]);
 
-  // Formata segundos em mm:ss
-  const formatarTempo = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  // Formata os segundos restantes para exibição (Regressivo na tela do usuário)
+  const formatarTempoRestante = (s: number) => {
+    const restante = TEMPO_LIMITE - s;
+    const segundosPositivos = restante < 0 ? 0 : restante;
+    const min = Math.floor(segundosPositivos / 60);
+    const seg = segundosPositivos % 60;
+    return `${String(min).padStart(2, '0')}:${String(seg).padStart(2, '0')}`;
+  };
+
+  const formatarTempoTotal = (s: number) => 
+    `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
   // Seleciona alternativa
   const selecionarAlternativa = (id: string) => {
@@ -237,44 +297,13 @@ function Quiz() {
     setHistorico((h) => [...h, correta]);
   };
 
-  // Enviar os dados via POST para o Backend Spring Boot
-  async function finalizarQuiz() {
-    const dadosResultado: RankingRequest = {
-      name: nameUser,
-      score: acertos,
-      time: tempo,
-    };
-
-    try {
-      const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/quiz/salvar-resultado`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dadosResultado),
-          }
-      );
-
-      if (!response.ok) {
-        throw new Error('Erro ao salvar o resultado no servidor.');
-      }
-
-      console.log('Resultado salvo com sucesso!');
-    } catch (error) {
-      console.error('Erro na requisição POST:', error);
-    }
-  }
-
   // Avança para a próxima questão ou finaliza enviando a requisição POST
   const proximaQuestao = async () => {
     const ehUltimaQuestao = indiceAtual + 1 >= totalQuestoes;
 
     if (ehUltimaQuestao) {
-      // Dispara a requisição POST para o Spring Boot
+      if (timerRef.current) clearInterval(timerRef.current);
       await finalizarQuiz();
-      // Segue para a tela final de pontuação
       setFase('resultado');
     } else {
       setIndiceAtual((i) => i + 1);
@@ -282,6 +311,9 @@ function Quiz() {
       setConfirmada(false);
     }
   };
+
+  const questaoAtual = questoesLocais[indiceAtual];
+  const totalQuestoes = questoesLocais.length;
 
   // ----------------------------------------------------------
   // TELA DE INÍCIO
@@ -296,10 +328,9 @@ function Quiz() {
             </h1>
             <p className="font-body text-floresta-300 text-base leading-relaxed mb-8 max-w-lg mx-auto">
               {totalQuestoes} questões sobre biodiversidade, adaptações e impactos ambientais
-              da floresta temperada. Inclui questões de múltipla escolha e somatória.
+              da floresta temperada. Você tem o limite máximo de <strong>5 minutos</strong> para concluir.
             </p>
 
-            {/* Campo de identificação do usuário */}
             <div className="max-w-sm mx-auto mb-8 text-left">
               <label htmlFor="userId" className="block font-body text-floresta-300 text-sm mb-2 font-medium">
                 Insira seu nome para iniciar:
@@ -318,7 +349,7 @@ function Quiz() {
               {[
                 { label: 'Questões', valor: totalQuestoes },
                 { label: 'Somatórias', valor: questoesLocais.filter(q => q.tipo === 'somatoria').length },
-                { label: 'Difíceis', valor: questoesLocais.filter(q => q.dificuldade === 'dificil').length },
+                { label: 'Tempo Máx.', valor: '5 min' },
               ].map((stat) => (
                   <div key={stat.label} className="bg-floresta-900 rounded-2xl p-4 border border-floresta-800/60">
                     <p className="font-display text-outono-400 text-2xl font-bold">{stat.valor}</p>
@@ -368,7 +399,6 @@ function Quiz() {
               <h2 className="font-display text-neve text-3xl font-semibold mb-2">Resultado Final</h2>
               <p className="font-body text-floresta-300 text-base mb-8">{mensagem}</p>
 
-              {/* Placar */}
               <div className="flex items-center justify-center gap-8 mb-8">
                 <div>
                   <p className="font-display text-outono-400 text-5xl font-bold">{acertos}<span className="text-floresta-500 text-2xl">/{totalQuestoes}</span></p>
@@ -381,12 +411,11 @@ function Quiz() {
                 </div>
                 <div className="w-px h-16 bg-floresta-800" />
                 <div>
-                  <p className="font-display text-floresta-300 text-3xl font-bold">{formatarTempo(tempo)}</p>
-                  <p className="font-body text-floresta-400 text-sm mt-1">Tempo total</p>
+                  <p className="font-display text-floresta-300 text-3xl font-bold">{formatarTempoTotal(tempo)}</p>
+                  <p className="font-body text-floresta-400 text-sm mt-1">Tempo de prova</p>
                 </div>
               </div>
 
-              {/* Histórico por questão */}
               <div className="flex justify-center gap-2 mb-8 flex-wrap">
                 {historico.map((acertou, i) => (
                     <div
@@ -426,7 +455,6 @@ function Quiz() {
       <div className="min-h-screen bg-sombra-900 py-8 px-4">
         <div className="max-w-3xl mx-auto">
 
-          {/* Header do quiz */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
             <span className="font-body text-floresta-400 text-sm">
@@ -447,13 +475,18 @@ function Quiz() {
               )}
             </div>
 
-            <div className="flex items-center gap-2 text-floresta-300 text-sm font-body">
+            {/* CRONÔMETRO EXIBIDO EM CONTAGEM REGRESSIVA */}
+            <div className={clsx(
+              "flex items-center gap-2 text-sm font-body font-bold px-3 py-1.5 rounded-xl border",
+              (TEMPO_LIMITE - tempo) <= 30 
+                ? "text-red-400 bg-red-700/10 border-red-700/30 animate-pulse" 
+                : "text-outono-400 bg-outono-700/10 border-outono-700/20"
+            )}>
               <Clock size={14} />
-              {formatarTempo(tempo)}
+              {formatarTempoRestante(tempo)}
             </div>
           </div>
 
-          {/* Barra de progresso */}
           <div className="w-full h-1.5 bg-floresta-900 rounded-full mb-8 overflow-hidden">
             <div
                 className="h-full bg-outono-600 rounded-full transition-all duration-500 ease-out"
@@ -461,20 +494,17 @@ function Quiz() {
             />
           </div>
 
-          {/* Card da questão */}
           <div className="bg-floresta-900 rounded-3xl p-6 md:p-8 border border-floresta-800/40 mb-6">
             <p className="font-display text-neve text-lg md:text-xl font-semibold leading-relaxed mb-6 whitespace-pre-line">
               {questaoAtual.enunciado}
             </p>
 
-            {/* Instrução para somatória */}
             {questaoAtual.tipo === 'somatoria' && (
                 <p className="font-body text-outono-400 text-sm mb-4 bg-outono-700/10 border border-outono-700/20 rounded-xl px-4 py-2">
                   ⚠️ Somatória: Selecione todas as afirmativas corretas e some os valores.
                 </p>
             )}
 
-            {/* Alternativas */}
             <div className="space-y-3">
               {questaoAtual.alternativas.map((alt) => {
                 const selecionada = respostaSelecionada.includes(alt.id);
@@ -522,7 +552,6 @@ function Quiz() {
             </div>
           </div>
 
-          {/* Explicação após confirmar */}
           {confirmada && (
               <div className={clsx(
                   'rounded-2xl p-5 mb-6 border flex items-start gap-3',
@@ -547,7 +576,6 @@ function Quiz() {
               </div>
           )}
 
-          {/* Botões de ação */}
           <div className="flex justify-between items-center">
           <span className="font-body text-floresta-500 text-sm">
             {acertos} acerto{acertos !== 1 ? 's' : ''} até agora

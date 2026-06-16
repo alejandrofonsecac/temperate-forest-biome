@@ -29,10 +29,9 @@ const navItems: NavItem[] = [
 
 function Header() {
   const [menuAberto, setMenuAberto] = useState(false);
-  const [scrollado, setScrollado] = useState(false);
-  const [mostrarHeader, setMostrarHeader] = useState(true)
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-  // Usado para destacar o link da página atual
   const location = useLocation();
 
   // ----------------------------------------------------------
@@ -40,31 +39,36 @@ function Header() {
   // ----------------------------------------------------------
   useEffect(() => {
     const handleScroll = () => {
-      // Aplica fundo sólido após 60px de scroll
-      setScrollado(window.scrollY > 60);
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY <= 50) {
+        setLastScrollY(currentScrollY);
+      }else if (currentScrollY > lastScrollY) {
+        setShowHeader(false);
+      } else {
+        setShowHeader(true);
+      }
+      setLastScrollY(currentScrollY);
     };
+
+
     window.addEventListener('scroll', handleScroll, {
       passive: true,
     });
     return () => {
       window.removeEventListener('scroll', handleScroll);
     }
-  }, []);
+  }, [lastScrollY]);
 
-  // Fecha o menu mobile ao mudar de rota
   useEffect(() => {
     setMenuAberto(false);
   }, [location]);
 
-  // Impede scroll do body quando menu mobile está aberto
   useEffect(() => {
     document.body.style.overflow = menuAberto ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuAberto]);
 
-  // ----------------------------------------------------------
-  // Verifica se um link está ativo
-  // ----------------------------------------------------------
   const isAtivo = (href: string) => {
     if (href === '/quiz') return location.pathname === '/quiz';
     if (href.startsWith('/#')) return location.pathname === '/';
@@ -75,13 +79,11 @@ function Header() {
     <>
       <header
         className={clsx(
-          // Posicionamento fixo no topo
-          'fixed top-0 left-0 right-0 z-50',
+          'top-0 left-0 right-0 z-50 fixed',
           'transition-all duration-500 ease-out',
-          // Estado padrão: transparente
-          !scrollado && !menuAberto && 'bg-transparent',
-          // Com scroll: glassmorphism escuro
-          (scrollado || menuAberto) && 'glass-dark border-b border-floresta-700/20 shadow-floresta',
+          showHeader ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
+          'bg-transparent',
+          showHeader && 'glass-light border-b border-floresta-700/20 backdrop-blur-sm'
         )}
         style={{ height: 'var(--header-height)' }}
       >
