@@ -40,15 +40,12 @@ function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
-      // REGRA DE OURO: Se estiver 100% no topo, o header obrigatoriamente aparece e fica transparente
       if (currentScrollY === 0) {
         setShowHeader(true);
         setNoTopo(true);
       } else {
         setNoTopo(false);
 
-        // Se o menu mobile estiver aberto, não esconde o header ao scrollar
         if (!menuAberto) {
           if (currentScrollY > lastScrollY && currentScrollY > 50) {
             // Rola para baixo: esconde
@@ -142,7 +139,7 @@ function Header() {
                         'hover:text-outono-500',
                         isAtivo(item.href)
                           ? 'text-outono-500 font-medium'
-                          : 'text-floresta-800' // Alterado temporariamente para legibilidade sobre fundo claro/escuro
+                          : 'text-floresta-800'
                       ),
                 )}
               >
@@ -163,7 +160,7 @@ function Header() {
           >
             <span
               className={clsx(
-                'absolute transition-all duration-300',
+                'absolute transition-all duration-300', noTopo ? 'text-white' : 'text-sombra-950',
                 menuAberto ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-75'
               )}
             >
@@ -181,7 +178,6 @@ function Header() {
         </div>
       </header>
 
-      {/* MENU MOBILE — painel deslizante */}
       <div
         className={clsx(
           'fixed inset-0 z-40 md:hidden',
