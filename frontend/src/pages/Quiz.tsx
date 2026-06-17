@@ -286,18 +286,19 @@ async function finalizarQuiz() {
 
   // Avança para a próxima questão ou finaliza enviando a requisição POST
   const proximaQuestao = async () => {
-    const ehUltimaQuestao = indiceAtual + 1 >= totalQuestoes;
+  const ehUltimaQuestao = indiceAtual + 1 >= totalQuestoes;
 
-    if (ehUltimaQuestao) {
-      if (timerRef.current) clearInterval(timerRef.current);
-      await finalizarQuiz();
-      setFase('resultado');
-    } else {
-      setIndiceAtual((i) => i + 1);
-      setRespostaSelecionada([]);
-      setConfirmada(false);
-    }
-  };
+  if (ehUltimaQuestao) {
+    if (timerRef.current) clearInterval(timerRef.current);
+    await finalizarQuiz();
+    
+    setFase('resultado');
+  } else {
+    setIndiceAtual((i) => i + 1);
+    setRespostaSelecionada([]);
+    setConfirmada(false);
+  }
+};
 
   const questaoAtual = questoesLocais[indiceAtual];
   const totalQuestoes = questoesLocais.length;
