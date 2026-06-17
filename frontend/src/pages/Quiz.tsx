@@ -197,33 +197,31 @@ function Quiz() {
 
   // Enviar os dados via POST para o Backend Spring Boot
   async function finalizarQuiz() {
-    const dadosResultado: RankingRequest = {
-      name: nameUserRef.current,
-      score: acertosRef.current,
-      time: tempoRef.current,
-    };
+  const dadosResultado: RankingRequest = {
+    name: nameUserRef.current,
+    score: acertosRef.current,
+    time: tempoRef.current,
+  };
 
-    try {
-      const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/api/quiz/salvar-resultado`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dadosResultado),
-          }
-      );
-
-      if (!response.ok) {
-        throw new Error('Erro ao salvar o resultado no servidor.');
-      }
-
-      console.log('Resultado salv com sucesso!');
-    } catch (error) {
-      console.error('Erro na requisição POST:', error);
+  try {
+    const response = await fetch(
+        `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api/quiz/salvar-resultado`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dadosResultado),
+        }
+    );
+    if (!response.ok) {
+      throw new Error('Erro ao salvar o resultado no servidor.');
     }
+    console.log('Resultado salvo com sucesso!');
+  } catch (error) {
+    console.error('Erro na requisição POST:', error);
   }
+}
 
   // Função isolada para gerenciar o encerramento forçado por tempo
   const encerrarPorTempoEsgotado = async () => {

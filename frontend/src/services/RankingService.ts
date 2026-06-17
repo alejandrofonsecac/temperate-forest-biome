@@ -5,14 +5,7 @@ interface RankingRequest {
     score: number;
 }
 
-export async function saveRanking(
-    data: RankingRequest
-){
-
-    const response = await api.post(
-        "/ranking",
-        data
-    );
-
+export async function saveRanking(data: RankingRequest){
+    const response = await api.post("/ranking", data);
     return response.data;
 }
