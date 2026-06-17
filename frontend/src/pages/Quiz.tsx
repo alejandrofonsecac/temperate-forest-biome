@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from 'react';
 import { CheckCircle, XCircle, ArrowRight, Trophy, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { saveRanking } from '../services/RankingService';
 import type { Questao, RankingRequest } from '../types';
 
 const questoesLocais: Questao[] = [
@@ -195,8 +196,8 @@ function Quiz() {
   useEffect(() => { tempoRef.current = tempo; }, [tempo]);
   useEffect(() => { nameUserRef.current = nameUser; }, [nameUser]);
 
-  // Enviar os dados via POST para o Backend Spring Boot
-  async function finalizarQuiz() {
+//Request POST
+async function finalizarQuiz() {
   const dadosResultado: RankingRequest = {
     name: nameUserRef.current,
     score: acertosRef.current,
@@ -204,19 +205,7 @@ function Quiz() {
   };
 
   try {
-    const response = await fetch(
-        `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api/quiz/salvar-resultado`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dadosResultado),
-        }
-    );
-    if (!response.ok) {
-      throw new Error('Erro ao salvar o resultado no servidor.');
-    }
+    await saveRanking(dadosResultado);
     console.log('Resultado salvo com sucesso!');
   } catch (error) {
     console.error('Erro na requisição POST:', error);
