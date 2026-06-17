@@ -19,7 +19,7 @@ export const faunaData: EspecieFauna[] = [
     tipo: 'fauna',
     nomePopular: 'Urso-pardo',
     nomeCientifico: 'Ursus arctos',
-    imagem: '/images/fauna/cervo-vermelho.jpg',
+    imagem: '/images/fauna/urso-pardo.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,

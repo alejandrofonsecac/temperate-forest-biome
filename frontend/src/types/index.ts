@@ -21,6 +21,12 @@ export type StatusConservacao =
 /** Tipo de espécie: animal ou vegetal */
 export type TipoEspecie = 'fauna' | 'flora';
 
+export interface RankingRequest {
+  name: string;
+  score: number;
+  time: number;
+}
+
 /** Estrutura base de uma espécie (fauna ou flora) */
 export interface Especie {
   id: number;

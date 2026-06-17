@@ -1,10 +1,3 @@
-// =============================================================
-// pages/Home.tsx
-//
-// Página principal que compõe todas as seções em ordem.
-// O React Router renderiza esta página na rota "/".
-// =============================================================
-
 import Hero from '../components/sections/Hero';
 import Caracterizacao from '../components/sections/Caracterizacao';
 import Biodiversidade from '../components/sections/Biodiversidade';

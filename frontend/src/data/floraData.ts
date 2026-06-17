@@ -20,7 +20,7 @@ export const floraData: EspecieFlora[] = [
     tipo: 'flora',
     nomePopular: 'Carvalho-pedunculado',
     nomeCientifico: 'Quercus robur',
-    imagem: 'public/images/flora/carvalho-penduculado.jpg',
+    imagem: '/images/flora/carvalho-penduculado.jpg',
     imagemCredito: 'Wikimedia Commons / CC BY-SA',
     isNativa: true,
     isEndemica: false,
