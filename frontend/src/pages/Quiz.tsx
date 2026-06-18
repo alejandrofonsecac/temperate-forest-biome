@@ -178,9 +178,8 @@ function Quiz() {
   const [acertos, setAcertos] = useState(0);
   const [historico, setHistorico] = useState<boolean[]>([]);
   const [nameUser, setNameUser] = useState('');
-  const [enviando, setEnviando] = useState(false);
 
-  // TEMPO LIMITE: 5 minutos = 300 segundos
+  const enviandoRef = useRef(false);
   const TEMPO_LIMITE = 5 * 60;
   
   // O estado 'tempo' agora guardará quantos segundos SE PASSARAM (para enviar ao banco)
@@ -290,19 +289,19 @@ async function finalizarQuiz() {
   const lastQuestion = indiceAtual + 1 >= totalQuestoes;
 
   if (lastQuestion) {
-    if (enviando) return; 
+    if (enviandoRef.current) {
+      return;
+    }
+    enviandoRef.current = true;
 
     if (timerRef.current) clearInterval(timerRef.current);
-    
+
     try {
-      setEnviando(true);
-      
-      await finalizarQuiz();
-      
+      await finalizarQuiz(); 
       setFase('resultado');
     } catch (error) {
-      console.error("Erro ao finalizar:", error);
-      setEnviando(false);
+      console.error("Erro ao enviar o resultado:", error);
+      enviandoRef.current = false; 
     }
   } else {
     setIndiceAtual((i) => i + 1);
