@@ -178,6 +178,7 @@ function Quiz() {
   const [acertos, setAcertos] = useState(0);
   const [historico, setHistorico] = useState<boolean[]>([]);
   const [nameUser, setNameUser] = useState('');
+  const [enviando, setEnviando] = useState(false);
 
   // TEMPO LIMITE: 5 minutos = 300 segundos
   const TEMPO_LIMITE = 5 * 60;
@@ -286,13 +287,23 @@ async function finalizarQuiz() {
 
   // Avança para a próxima questão ou finaliza enviando a requisição POST
   const proximaQuestao = async () => {
-  const ehUltimaQuestao = indiceAtual + 1 >= totalQuestoes;
+  const lastQuestion = indiceAtual + 1 >= totalQuestoes;
 
-  if (ehUltimaQuestao) {
+  if (lastQuestion) {
+    if (enviando) return; 
+
     if (timerRef.current) clearInterval(timerRef.current);
-    await finalizarQuiz();
     
-    setFase('resultado');
+    try {
+      setEnviando(true);
+      
+      await finalizarQuiz();
+      
+      setFase('resultado');
+    } catch (error) {
+      console.error("Erro ao finalizar:", error);
+      setEnviando(false);
+    }
   } else {
     setIndiceAtual((i) => i + 1);
     setRespostaSelecionada([]);
